@@ -1,25 +1,26 @@
 class D3APP {
   constructor(d, h, w) {
-    this.d = d;
     this.h = h,
     this.w = w;
-    this.dur = 40;
-    this.count = 100;
+    this.dur = 50;
+    this.count = 1;
     this.pad = 1;
     this.data = this.genData();
     this.init();
     this.setScales();
+    // this.render();
     this.update();
     this.interval = setInterval(() => {
       this.update();
-    }, this.dur)
+    }, 1000)
   }
 
   update() {
     let data = this.shiftData();
     let bars = d3.select('svg').selectAll('rect').data(data);
     // ENTER:
-    bars.enter().append('rect')
+    let enteredBars = bars.enter();
+    enteredBars.append('rect')
     .attr('x', (d, i) => {
       return i * (this.w / this.data.length);
     })
@@ -35,8 +36,9 @@ class D3APP {
     });
     // EXIT:
     bars.exit().remove();
+
     bars
-    .transition().duration(this.dur)
+    .transition().duration(400)
       .attr('x', (d, i) => {
         return i * (this.w / this.data.length);
       })
@@ -58,7 +60,7 @@ class D3APP {
       .range([0, this.h]);
     this.colorScale = d3.scaleLinear()
       .domain([0, d3.max(this.data, d => d)])
-      .range(['black', 'white']);
+      .range(['red', 'blue']);
     return this;
   }
 
@@ -67,8 +69,7 @@ class D3APP {
       this.svg.selectAll('rect')
       .data(this.data)
     let enteredBars = this.bars.enter();
-    let removedBars = this.bars.exit();
-    removedBars.remove();
+    // console.log('enteredBars ~~>', enteredBars);
     enteredBars
       .append('rect')
       .attr('x', (d, i) => {
@@ -84,8 +85,6 @@ class D3APP {
       .attr('fill', (d, i) => {
         return this.colorScale(d);
       });
-    this.bars.exit().remove();
-    console.log('this.data[0] ~~>', this.data[0]);
     return this;
   }
 
@@ -112,19 +111,17 @@ class D3APP {
   genData() {
     let data = [];
     for (var i = 0; i < this.count; i++) {
-      data.push(i)
+      data.push(this.randomInt())
     }
     return data;
   }
 
-  randomInt(prev) {
+  randomInt() {
     return Math.round(Math.random() * 100);
   }
 
   shiftData() {
-    let removed = this.data.shift();
-    if (removed + 5 > 100) removed = 0;
-    this.data.push(removed + 5);
+    this.data.push(this.randomInt());
     return this.data;
   }
 
@@ -136,10 +133,10 @@ class D3APP {
   }
 
   render() {
-    // this
-    //   .setScales()
-    //   .drawBars()
-    //   .drawLabels()
+    this
+      .setScales()
+      .drawBars()
+      .drawLabels()
   }
 
 }
