@@ -1,7 +1,7 @@
-class D3APP {
-  constructor(d, h, w) {
-    this.h = h,
-    this.w = w;
+class D3Rect {
+  constructor(opts) {
+    this.h = opts.height,
+    this.w = opts.width;
     this.dur = 50;
     this.count = 1;
     this.pad = 1;
@@ -56,7 +56,8 @@ class D3APP {
 
   setScales() {
     this.yScale = d3.scaleLinear()
-      .domain([0, d3.max(this.data, d => d)])
+      .domain([0, 100])
+    // .domain([0, d3.max(this.data, d => d)])
       .range([0, this.h]);
     this.colorScale = d3.scaleLinear()
       .domain([0, d3.max(this.data, d => d)])
@@ -126,7 +127,7 @@ class D3APP {
   }
 
   init() {
-    this.svg = d3.select('#root')
+    this.svg = d3.select('#rect')
       .append('svg')
       .attr('height', this.h)
       .attr('width', this.w);
@@ -141,4 +142,5 @@ class D3APP {
 
 }
 
-module.exports = D3APP;
+window.D3Rect = D3Rect;
+module.exports = D3Rect;

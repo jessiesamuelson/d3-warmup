@@ -1,12 +1,16 @@
 const path = require('path');
 
 module.exports = {
-  entry: path.join(__dirname, '/app.js'),
+  // entry: path.join(__dirname, '/app.js'),
+  entry: {
+    circle: path.join(__dirname, '/circle.js'),
+    rect: path.join(__dirname, '/rect.js'),
+  },
   output: {
     path: 'public',
-    filename: 'app.bundle.js',
+    filename: '[name]-bundle.js',
     libraryTarget: 'var',
-    library: 'D3APP'
+    // library: 'D3Circle'
   },
   devtool: 'sourcemaps',
   module: {
@@ -19,6 +23,6 @@ module.exports = {
     ]
   },
   devServer: {
-    
+
   }
 };
